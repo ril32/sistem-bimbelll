@@ -1,0 +1,46 @@
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Pengaturan Cetak Nota Kuitansi */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #modal-nota,
+  #modal-nota #nota-content,
+  #modal-nota #nota-content * {
+    visibility: visible;
+  }
+  #modal-nota {
+    position: fixed;
+    inset: 0;
+    background: white;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 20px;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

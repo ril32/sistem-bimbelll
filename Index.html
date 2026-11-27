@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Bimbel Khasanah - Sistem Manajemen & Keuangan</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- CSS Terpisah -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="text-slate-800 antialiased bg-slate-50">
+
+  <!-- ==================== HALAMAN LOGIN ==================== -->
+  <div id="login-screen" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-blue-700 to-slate-900 p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 sm:p-8 text-center">
+      <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl shadow-sm">
+        <i class="fa-solid fa-graduation-cap"></i>
+      </div>
+      <h1 class="text-2xl font-extrabold text-slate-900">Bimbel Khasanah</h1>
+      <p class="text-slate-500 text-xs sm:text-sm mt-1.5 mb-6">Sistem Manajemen SPP Murid, Gaji & Absensi Guru</p>
+
+      <!-- Pesan Error Login -->
+      <div id="login-error" class="hidden mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-600 text-xs font-semibold flex items-center gap-2 text-left">
+        <i class="fa-solid fa-circle-exclamation text-sm"></i>
+        <span>Username atau Password salah!</span>
+      </div>
+
+      <form onsubmit="handleLogin(event)" class="space-y-4 text-left">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Username Admin</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+              <i class="fa-solid fa-user text-sm"></i>
+            </span>
+            <input type="text" id="input-username" required placeholder="Masukkan username"
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm font-medium" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Password</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+              <i class="fa-solid fa-key text-sm"></i>
+            </span>
+            <input type="password" id="input-password" required placeholder="Masukkan password"
+              class="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm font-medium" />
+            <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600">
+              <i id="eye-icon" class="fa-solid fa-eye text-sm"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit"
+          class="mt-6 w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-xl transition duration-200 shadow-md text-sm">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span>Masuk ke Sistem</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== APLIKASI UTAMA ==================== -->
+  <div id="main-app" class="hidden min-h-screen flex flex-col md:flex-row pb-20 md:pb-0">
+    
+    <!-- Header Mobile -->
+    <header class="no-print md:hidden bg-slate-900 text-white p-4 flex items-center justify-between sticky top-0 z-30 shadow-md">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center font-bold">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div>
+          <h2 class="font-bold text-sm">Bimbel Khasanah</h2>
+          <p class="text-[10px] text-emerald-400 flex items-center gap-1">
+            <i class="fa-solid fa-circle text-[6px]"></i> Data Tersimpan Otomatis
+          </p>
+        </div>
+      </div>
+      <button onclick="logout()" class="px-3 py-1.5 rounded-lg bg-slate-800 text-rose-400 text-xs font-bold">
+        <i class="fa-solid fa-right-from-bracket"></i> Keluar
+      </button>
+    </header>
+
+    <!-- Sidebar Navigasi Desktop -->
+    <aside class="no-print hidden md:flex w-64 bg-slate-900 text-white flex-col justify-between shrink-0 sticky top-0 h-screen">
+      <div>
+        <div class="p-6 border-b border-slate-800">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-lg font-bold shrink-0">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div>
+              <h2 class="font-bold text-base">Bimbel Khasanah</h2>
+              <p class="text-[11px] text-emerald-400 flex items-center gap-1 mt-0.5">
+                <i class="fa-solid fa-circle text-[7px]"></i> Tersimpan di Perangkat
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <nav class="p-4 space-y-1.5">
+          <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold bg-indigo-600 text-white transition">
+            <i class="fa-solid fa-chart-pie w-5 text-center"></i> Dashboard & Keuangan
+          </button>
+          <button onclick="switchTab('murid')" id="nav-murid" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-300 hover:bg-slate-800 transition">
+            <i class="fa-solid fa-user-graduate w-5 text-center"></i> Data & SPP Murid
+          </button>
+          <button onclick="switchTab('absensi')" id="nav-absensi" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-300 hover:bg-slate-800 transition">
+            <i class="fa-solid fa-clipboard-user w-5 text-center"></i> Absensi Guru
+          </button>
+          <button onclick="switchTab('guru')" id="nav-guru" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-300 hover:bg-slate-800 transition">
+            <i class="fa-solid fa-chalkboard-user w-5 text-center"></i> Data & Gaji Guru
+          </button>
+        </nav>
+      </div>
+
+      <div class="p-4 border-t border-slate-800 space-y-3">
+        <!-- Tombol Backup Data -->
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="exportBackup()" title="Simpan cadangan data ke file" class="py-2 px-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-semibold text-indigo-300 flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-download"></i> Backup
+          </button>
+          <label title="Pulihkan data dari file backup" class="py-2 px-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-semibold text-emerald-300 flex items-center justify-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-upload"></i> Restore
+            <input type="file" accept=".json" onchange="importBackup(event)" class="hidden" />
+          </label>
+        </div>
+
+        <div class="flex items-center gap-3 pt-1">
+          <div id="user-avatar" class="w-9 h-9 rounded-full bg-indigo-500 flex items-center justify-center font-bold text-sm">A</div>
+          <div class="overflow-hidden">
+            <p id="user-display-name" class="text-sm font-semibold truncate">Admin Khasanah</p>
+            <p class="text-xs text-slate-400 truncate">Pengelola Bimbel</p>
+          </div>
+        </div>
+        <button onclick="logout()" class="w-full py-2 px-3 rounded-lg bg-slate-800 hover:bg-rose-600 text-xs font-semibold text-slate-300 hover:text-white transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-right-from-bracket"></i> Keluar Akun
+        </button>
+      </div>
+    </aside>
+
+    <!-- Bottom Navigation Mobile -->
+    <nav class="no-print md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 flex justify-around items-center py-2 z-40 shadow-lg">
+      <button onclick="switchTab('dashboard')" id="mnav-dashboard" class="mnav-btn flex flex-col items-center text-indigo-600 text-[11px] font-bold">
+        <i class="fa-solid fa-chart-pie text-base mb-0.5"></i> Keuangan
+      </button>
+      <button onclick="switchTab('murid')" id="mnav-murid" class="mnav-btn flex flex-col items-center text-slate-400 text-[11px] font-semibold">
+        <i class="fa-solid fa-user-graduate text-base mb-0.5"></i> Murid
+      </button>
+      <button onclick="switchTab('absensi')" id="mnav-absensi" class="mnav-btn flex flex-col items-center text-slate-400 text-[11px] font-semibold">
+        <i class="fa-solid fa-clipboard-user text-base mb-0.5"></i> Absensi
+      </button>
+      <button onclick="switchTab('guru')" id="mnav-guru" class="mnav-btn flex flex-col items-center text-slate-400 text-[11px] font-semibold">
+        <i class="fa-solid fa-chalkboard-user text-base mb-0.5"></i> Guru & Gaji
+      </button>
+    </nav>
+
+    <!-- Konten Utama -->
+    <main class="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto">
+      
+      <!-- Top Bar Filter Bulan & Tahun -->
+      <div class="no-print flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+        <div>
+          <h1 id="page-title" class="text-lg sm:text-xl font-extrabold text-slate-900">Dashboard Keuangan Bimbel Khasanah</h1>
+          <p class="text-xs text-slate-500">Laporan pemasukan SPP, pengeluaran gaji guru, dan tunggakan</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-semibold text-slate-500">Periode:</span>
+          <select id="filter-bulan" onchange="renderAll()" class="px-3 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="01">Januari</option>
+            <option value="02">Februari</option>
+            <option value="03">Maret</option>
+            <option value="04">April</option>
+            <option value="05">Mei</option>
+            <option value="06">Juni</option>
+            <option value="07">Juli</option>
+            <option value="08">Agustus</option>
+            <option value="09">September</option>
+            <option value="10">Oktober</option>
+            <option value="11">November</option>
+            <option value="12">Desember</option>
+          </select>
+          <select id="filter-tahun" onchange="renderAll()" class="px-3 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ==================== TAB 1: DASHBOARD KEUANGAN ==================== -->
+      <section id="tab-dashboard" class="space-y-6">
+        <!-- Kartu Statistik Utama -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold uppercase text-slate-400">Pemasukan (SPP Lunas)</span>
+              <span class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-wallet"></i></span>
+            </div>
+            <p id="stat-pemasukan" class="text-xl sm:text-2xl font-extrabold text-emerald-600">Rp 0</p>
+            <p id="stat-murid-lunas" class="text-xs text-slate-500 mt-1">0 dari 0 murid sudah bayar</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold uppercase text-slate-400">Pengeluaran (Gaji Guru)</span>
+              <span class="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center"><i class="fa-solid fa-money-bill-transfer"></i></span>
+            </div>
+            <p id="stat-pengeluaran" class="text-xl sm:text-2xl font-extrabold text-rose-600">Rp 0</p>
+            <p id="stat-guru-dibayar" class="text-xs text-slate-500 mt-1">0 guru sudah digaji</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold uppercase text-slate-400">Saldo Bersih Bimbel</span>
+              <span class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center"><i class="fa-solid fa-sack-dollar"></i></span>
+            </div>
+            <p id="stat-saldo" class="text-xl sm:text-2xl font-extrabold text-indigo-600">Rp 0</p>
+            <p class="text-xs text-slate-500 mt-1">Pemasukan dikurangi gaji</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold uppercase text-slate-400">Tunggakan SPP Murid</span>
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center"><i class="fa-solid fa-clock"></i></span>
+            </div>
+            <p id="stat-tunggakan" class="text-xl sm:text-2xl font-extrabold text-amber-600">Rp 0</p>
+            <p id="stat-murid-belum" class="text-xs text-slate-500 mt-1">0 murid belum bayar les</p>
+          </div>
+        </div>
+
+        <!-- Daftar Cepat Murid Menunggak & Guru Belum Digaji -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Daftar Tunggakan Murid -->
+          <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-bold text-slate-800 text-sm sm:text-base flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Murid Belum Bayar Bulan Ini
+              </h3>
+              <button onclick="switchTab('murid')" class="text-xs font-semibold text-indigo-600 hover:underline">Kelola Murid</button>
+            </div>
+            <div id="dashboard-tunggakan-list" class="space-y-2.5 max-h-72 overflow-y-auto"></div>
+          </div>
+
+          <!-- Status Penggajian Guru -->
+          <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-bold text-slate-800 text-sm sm:text-base flex items-center gap-2">
+                <i class="fa-solid fa-user-check text-indigo-600"></i> Ringkasan Gaji Guru Bulan Ini
+              </h3>
+              <button onclick="switchTab('guru')" class="text-xs font-semibold text-indigo-600 hover:underline">Kelola Gaji</button>
+            </div>
+            <div id="dashboard-gaji-list" class="space-y-2.5 max-h-72 overflow-y-auto"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 2: DATA & SPP MURID ==================== -->
+      <section id="tab-murid" class="hidden space-y-6">
+        <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-100">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-slate-900">Data Murid & Pembayaran Les</h2>
+              <p class="text-xs text-slate-500">Filter berdasarkan jenjang atau klik status untuk ubah Lunas / Belum Bayar</p>
+            </div>
+            <button onclick="openModal('modal-murid')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-plus"></i> Tambah Murid Baru
+            </button>
+          </div>
+
+          <!-- Filter Jenjang & Status Pembayaran -->
+          <div class="flex flex-wrap items-center gap-2 mb-4">
+            <select id="filter-jenjang" onchange="renderMurid()" class="px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold bg-slate-50">
+              <option value="SEMUA">Semua Jenjang (SD/SMP/SMA)</option>
+              <option value="SD">Jenjang SD</option>
+              <option value="SMP">Jenjang SMP</option>
+              <option value="SMA">Jenjang SMA</option>
+            </select>
+            <select id="filter-status-spp" onchange="renderMurid()" class="px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold bg-slate-50">
+              <option value="SEMUA">Semua Status Bayar</option>
+              <option value="LUNAS">Sudah Bayar (Lunas)</option>
+              <option value="BELUM">Belum Bayar (Menunggak)</option>
+            </select>
+            <input type="text" id="search-murid" onkeyup="renderMurid()" placeholder="Cari nama murid..." class="px-3 py-2 rounded-xl border border-slate-200 text-xs flex-1 min-w-[160px]" />
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse min-w-[680px]">
+              <thead>
+                <tr class="border-b border-slate-200 text-xs font-bold uppercase text-slate-400">
+                  <th class="py-3 px-3">Nama Murid</th>
+                  <th class="py-3 px-3">Jenjang & Kelas</th>
+                  <th class="py-3 px-3">WA Wali Murid</th>
+                  <th class="py-3 px-3">Biaya SPP</th>
+                  <th class="py-3 px-3">Status Bayar</th>
+                  <th class="py-3 px-3 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="table-murid-body" class="divide-y divide-slate-100 text-xs sm:text-sm"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 3: ABSENSI GURU ==================== -->
+      <section id="tab-absensi" class="hidden space-y-6">
+        <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-100">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-slate-900">Absensi Guru Les (Masuk / Izin)</h2>
+              <p class="text-xs text-slate-500">Klik <strong>Masuk</strong> untuk mencatat kehadiran & menambah sesi gaji, atau <strong>Izin</strong> jika berhalangan</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <label class="text-xs font-bold text-slate-500">Tanggal Absen:</label>
+              <input type="date" id="absensi-tanggal" onchange="renderAbsensi()" class="px-3 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold bg-slate-50" />
+            </div>
+          </div>
+
+          <!-- Kartu Absensi Cepat per Guru -->
+          <div id="absensi-cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8"></div>
+
+          <!-- Riwayat Log Absensi Bulan Ini -->
+          <div class="border-t border-slate-100 pt-5">
+            <h3 class="font-bold text-sm text-slate-800 mb-3">Riwayat Absensi Guru (Periode Terpilih)</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse min-w-[500px]">
+                <thead>
+                  <tr class="border-b border-slate-200 text-xs font-bold uppercase text-slate-400">
+                    <th class="py-2.5 px-3">Tanggal</th>
+                    <th class="py-2.5 px-3">Nama Guru</th>
+                    <th class="py-2.5 px-3">Keterangan</th>
+                    <th class="py-2.5 px-3">Status</th>
+                    <th class="py-2.5 px-3 text-right">Hapus</th>
+                  </tr>
+                </thead>
+                <tbody id="table-absensi-log" class="divide-y divide-slate-100 text-xs sm:text-sm"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 4: DATA & GAJI GURU ==================== -->
+      <section id="tab-guru" class="hidden space-y-6">
+        <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-100">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-slate-900">Data Guru Les & Penggajian</h2>
+              <p class="text-xs text-slate-500">Sesi hadir dihitung otomatis dari absensi masuk, klik status untuk menandai Sudah Digaji / Belum</p>
+            </div>
+            <button onclick="openModal('modal-guru')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-plus"></i> Tambah Guru Les
+            </button>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse min-w-[680px]">
+              <thead>
+                <tr class="border-b border-slate-200 text-xs font-bold uppercase text-slate-400">
+                  <th class="py-3 px-3">Nama Guru</th>
+                  <th class="py-3 px-3">Mapel / Jenjang</th>
+                  <th class="py-3 px-3">Tarif</th>
+                  <th class="py-3 px-3">Jumlah Masuk</th>
+                  <th class="py-3 px-3">Total Gaji</th>
+                  <th class="py-3 px-3">Status Gaji</th>
+                  <th class="py-3 px-3 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="table-guru-body" class="divide-y divide-slate-100 text-xs sm:text-sm"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+  <!-- Modal Tambah Murid -->
+  <div id="modal-murid" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
+      <h3 class="text-lg font-bold mb-4">Tambah Data Murid Baru</h3>
+      <form onsubmit="saveMurid(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Nama Lengkap Murid</label>
+          <input type="text" id="murid-nama" required placeholder="Contoh: Rina Marlina" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Jenjang Sekolah</label>
+            <select id="murid-jenjang" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold">
+              <option value="SD">SD</option>
+              <option value="SMP">SMP</option>
+              <option value="SMA">SMA</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Kelas</label>
+            <input type="text" id="murid-kelas" required placeholder="Contoh: Kelas 6 / 9 / 12" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Nomor WhatsApp Wali Murid</label>
+          <input type="tel" id="murid-wa" required placeholder="Contoh: 081234567890" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm" />
+          <p class="text-[11px] text-slate-400 mt-1">Gunakan awalan 08... atau 628... untuk tombol chat WA langsung</p>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Biaya SPP Les per Bulan (Rp)</label>
+          <input type="number" id="murid-spp" required placeholder="250000" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('modal-murid')" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600">Batal</button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-600 text-white">Simpan Murid</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Tambah Guru -->
+  <div id="modal-guru" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
+      <h3 class="text-lg font-bold mb-4">Tambah Data Guru Les</h3>
+      <form onsubmit="saveGuru(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Nama Guru Les</label>
+          <input type="text" id="guru-nama" required placeholder="Contoh: Kak Dimas, S.Pd" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Mata Pelajaran / Jenjang</label>
+          <input type="text" id="guru-mapel" required placeholder="Contoh: Matematika SD & SMP" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Sistem Penggajian</label>
+          <select id="guru-skema" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+            <option value="pertemuan">Per Pertemuan / Kehadiran</option>
+            <option value="bulanan">Gaji Tetap Bulanan</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Nominal Tarif / Gaji (Rp)</label>
+          <input type="number" id="guru-tarif" required placeholder="50000" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('modal-guru')" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600">Batal</button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-600 text-white">Simpan Guru</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Nota Kuitansi SPP -->
+  <div id="modal-nota" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
+      <div id="nota-content" class="border-2 border-dashed border-slate-300 p-5 rounded-xl text-sm space-y-3">
+        <div class="text-center border-b border-slate-200 pb-3">
+          <h4 class="font-extrabold text-lg uppercase text-indigo-700">BIMBEL KHASANAH</h4>
+          <p class="text-xs text-slate-500">Bukti Pembayaran SPP Bulanan</p>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500">Nama Murid:</span>
+          <span id="nota-nama" class="font-bold"></span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500">Jenjang / Kelas:</span>
+          <span id="nota-kelas" class="font-semibold"></span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500">Periode Bulan:</span>
+          <span id="nota-periode" class="font-semibold"></span>
+        </div>
+        <div class="flex justify-between border-t border-slate-200 pt-2 text-base">
+          <span class="font-bold">Total Bayar:</span>
+          <span id="nota-nominal" class="font-extrabold text-emerald-600"></span>
+        </div>
+        <div class="text-center pt-2">
+          <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 font-bold text-xs rounded-full">LUNAS</span>
+        </div>
+      </div>
+      <div class="no-print flex justify-end gap-2 mt-4">
+        <button onclick="closeModal('modal-nota')" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600">Tutup</button>
+        <button onclick="window.print()" class="px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-600 text-white">
+          <i class="fa-solid fa-print mr-1"></i> Cetak Nota
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Terpisah -->
+  <script src="script.js"></script>
+</body>
+</html>
